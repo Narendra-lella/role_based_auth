@@ -43,7 +43,8 @@ class Registrationserializer(serializers.ModelSerializer):
         user = Customuser.objects.create(
             username = validated_data['username'],
             email = validated_data['email'],
-            # dob=validated_data['dob'],
+            first_name = validated_data['first_name'],
+            dob=validated_data['dob'],
             role = validated_data['role']
         )
 
@@ -68,9 +69,11 @@ class LoginSerializer(serializers.Serializer):
                 {"Invalied Credentials"}
             )
         try :
-            refresh = RefreshToken.for_user(user)
-            refresh_token = str(refresh)
-            access_token = str(refresh.access_token)
+            token_serializer = MyTokenObtainpairserializer()
+            tokens = token_serializer.get_token(user)
+            refresh_token = str(RefreshToken.for_user(user))
+            access_token = str(tokens.access_token)
+
 
             update_last_login(None,user)
 
@@ -86,11 +89,8 @@ class LoginSerializer(serializers.Serializer):
         except Customuser.DoesNotExist:
             raise serializers.ValidationError({"invalied Credentials"})
 
+
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customuser
-        fileds = (
-            'email',
-            'username',
-            'role'
-        )
+        fields = ('username', 'email', 'role')
