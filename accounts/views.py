@@ -44,16 +44,16 @@ class LoginApiView(APIView):
             'message': 'User logged in successfully',
             'access': access,
             'refresh': refresh,
-            'authenticatedUser': {
-                'email': email,
-                'username':username,
-                'role': role
-            }
+            # 'authenticatedUser': {
+            #     'email': email,
+            #     'username':username,
+            #     'role': role
+            # }
         }
 
         return Response(response, status=status_code)
 
 class UsersListView(generics.ListAPIView):
     serializer_class = UserListSerializer
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     queryset = Customuser.objects.all()

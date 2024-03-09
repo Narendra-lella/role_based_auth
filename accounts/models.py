@@ -10,12 +10,14 @@ class Customuser(AbstractUser):
     MANAGER = 'Manager'
     TEACHER = 'Teacher'
     STUDENT = 'Student'
+    HOD = 'Hod'
     
     ROLE_CHOICES =(
         (ADMIN,'Admin'),
         (MANAGER,'Manager'),
         (TEACHER,'Teacher'),
-        (STUDENT,'Student')
+        (STUDENT,'Student'),
+        (HOD,'Hod')
     )
     uuid = models.UUIDField(unique=True,editable=False,default=uuid.uuid4)
     username = models.CharField(max_length=50,blank=False,null=False)
